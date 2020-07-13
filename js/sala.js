@@ -5,6 +5,8 @@ import { GUI } from '/jsm/libs/dat.gui.module.js';
 import { OrbitControls } from '/jsm/controls/OrbitControls.js';
 import { RectAreaLightHelper } from '/jsm/helpers/RectAreaLightHelper.js';
 import { RectAreaLightUniformsLib } from '/jsm/lights/RectAreaLightUniformsLib.js';
+import { CSS3DRenderer, CSS3DObject } from '/jsm/renderers/CSS3DRenderer.js';
+
 
 // shader injection for box projected cube environment mapping
 var worldposReplace = /* glsl */`
@@ -16,7 +18,27 @@ var worldposReplace = /* glsl */`
   #endif
 #endif
 `;
+var Element = function ( id, x, y, z, ry ) {
 
+				var div = document.createElement( 'div' );
+				div.style.width = '480px';
+				div.style.height = '360px';
+				div.style.backgroundColor = '#000';
+
+				var iframe = document.createElement( 'iframe' );
+				iframe.style.width = '480px';
+				iframe.style.height = '360px';
+				iframe.style.border = '0px';
+				iframe.src = [ 'https://www.youtube.com/embed/', id, '?rel=0' ].join( '' );
+				div.appendChild( iframe );
+
+				var object = new CSS3DObject( div );
+				object.position.set( x, y, z );
+				object.rotation.y = ry;
+
+				return object;
+
+			};
 var envmapPhysicalParsReplace = /* glsl */`
 #if defined( USE_ENVMAP )
   #define BOX_PROJECTED_ENV_MAP
@@ -127,7 +149,16 @@ var groundPlane, wallMat;
 init();
 
 function init() {
+  //crear escena
+  createScene();
 
+
+  //actualizar escena
+  //update();
+
+}
+
+function createScene(){
   var container = document.getElementById( 'container' );
 
   // renderer
@@ -164,7 +195,7 @@ function init() {
 
   // camera
   camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR );
-  camera.position.set( 256, 106, - 5 );
+  camera.position.set( 382, 10, - 3 );
 
   cameraControls = new OrbitControls( camera, renderer.domElement );
   cameraControls.target.set( 0, - 10, 0 );
@@ -173,6 +204,11 @@ function init() {
   cameraControls.addEventListener( 'change', render );
   cameraControls.update();
 
+  //probando video
+
+  var video = new Element( 'SJOz3qjfQXU', 0, 0, 240, 0 );
+
+  scene.add(video);
   // cube camera for environment map
 
   var cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 512, {
@@ -294,17 +330,17 @@ function init() {
   //lights
   var width = 200;
   var height = 100;
-  var intensity = 5;
+  var intensity = 6;
 
   RectAreaLightUniformsLib.init();
 
-  var blueRectLight = new THREE.RectAreaLight( 0xf3aaaa, intensity, width, height );
-  blueRectLight.position.set( 200, 5, 0 );
-  blueRectLight.lookAt( 10, 5, 0 );
+  //var blueRectLight = new THREE.RectAreaLight( 0xf3aaaa, intensity, width, height );
+  //blueRectLight.position.set( 200, 5, 0 );
+  //blueRectLight.lookAt( 10, 5, 0 );
   //scene.add( blueRectLight );
 
-  var blueRectLightHelper = new RectAreaLightHelper( blueRectLight, 0xffffff );
-  blueRectLight.add( blueRectLightHelper );
+//  var blueRectLightHelper = new RectAreaLightHelper( blueRectLight, 0xffffff );
+  //blueRectLight.add( blueRectLightHelper );
 
   var redRectLight = new THREE.RectAreaLight( 0x9aaeff, intensity, width, height );
   redRectLight.position.set( -200, 5, 0 );
@@ -315,35 +351,60 @@ function init() {
   redRectLight.add( redRectLightHelper );
 
   //groupSillas
+  //chair.position.y = -90;
+  //chair.position.x = -70;
+  //chair.position.z = 0;
 
-  var chair = new GLTFLoader().load( "/assets/models/scene.gltf", function ( gltf ) {
-  chair = gltf.scene;
-  //posicion silla,
-  if (chair){
-    chair.position.y = -90;
-    chair.position.x = -70;
-    chair.position.z = 0;
-    //x+=50;
-    chair.rotation.y+=-1;
-    //escala
-    chair.scale.set(0.02,0.02,0.02);
+  var posiX=-70;
+  var posiz=0;
+  var posiy=-90;
 
-    scene.add(chair);
-    //if(i==4){
-    //  x+=200;
-    //}
+  for (let i = 0; i <2; i++) {
+     createSillas(posiX, posiz,posiy);
+     posiz-=15;
   }
 
 
-  }, undefined, function ( error ) {
-
-          console.error( error );
-
-  } );
-
 
   render();
+}
 
+function createSillas(x,z,y){
+
+  var chair;
+  var groupSillas = new THREE.Group();
+    for(let i=0;i<=4;i++){
+
+
+    new GLTFLoader().load( "/assets/models/scene.gltf", function ( gltf ) {
+    chair = gltf.scene;
+    //posicion silla,
+    if (chair){
+      chair.position.y = y;
+      chair.position.x = x;
+      chair.position.z = z;
+      x+=50;
+      chair.rotation.y+=0.5;
+      //escala
+      chair.scale.set(0.02,0.02,0.02);
+
+      groupSillas.add(chair);
+      if(i==4){
+        //update();
+        x+=200;
+      }
+    }
+
+
+    }, undefined, function ( error ) {
+
+            console.error( error );
+
+    } );
+
+  }
+
+scene.add(groupSillas);
 }
 
 function updateCubeMap() {
@@ -361,12 +422,22 @@ function updateCubeMap() {
 
   groundPlane.visible = true;
 
+
   render();
 
 }
 
+function update(){
+    //la libreria tiene una funcion requestAnimationFrame(update) para generar el loop
+    requestAnimationFrame(update);
+    render();
+
+}
+
+
 function render() {
 
   renderer.render( scene, camera );
-
+  camera.position.x -= Math.cos( Math.sin( 10 ) ) / 10;
+  //console.log(camera.position);
 }

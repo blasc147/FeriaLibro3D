@@ -122,7 +122,7 @@ for (let i = 0; i <2; i++) {
         x+=50;
         chair.rotation.y+=0.5;
         //escala
-        chair.scale.set(0.08,0.08,0.08);
+        chair.scale.set(0.02,0.02,0.02);
 
         groupSillas.add(chair);
         if(i==4){
