@@ -154,8 +154,8 @@ function update(){
 function render(){
     //actualizar controles
     controls.update();
-    camera.position.z += Math.sin( Math.cos( 10 ) ) / 20;
-    camera.position.x += Math.cos( Math.sin( 10 ) ) / 20;
+    camera.position.z += Math.sin( Math.cos( 10 ) ) / 100;
+    camera.position.x += Math.cos( Math.sin( 10 ) ) / 100;
     //camera.position.z -= 0.1; para rotar la camara en z
     //camera.position.x
     //camera.lookAt(objeto)
