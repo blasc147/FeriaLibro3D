@@ -426,5 +426,4 @@ function render() {
   camera.position.x -= Math.cos( Math.sin( 10 ) ) / 10;
   camera.position.z += Math.cos( Math.sin( 10 ) ) / 10;
 
-
 }
