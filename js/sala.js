@@ -1,13 +1,11 @@
 "use strict";
 import * as THREE from '../build/three.module.js';
-import {GLTFLoader} from "/jsm/loaders/GLTFLoader.js";
-import {DRACOLoader} from "/jsm/loaders/DRACOLoader.js";
-import { GUI } from '/jsm/libs/dat.gui.module.js';
-import { OrbitControls } from '/jsm/controls/OrbitControls.js';
-import { RectAreaLightHelper } from '/jsm/helpers/RectAreaLightHelper.js';
-import { RectAreaLightUniformsLib } from '/jsm/lights/RectAreaLightUniformsLib.js';
+import { GUI } from '../jsm/libs/dat.gui.module.js';
+import { OrbitControls } from '../jsm/controls/OrbitControls.js';
+import { RectAreaLightHelper } from '../jsm/helpers/RectAreaLightHelper.js';
+import { RectAreaLightUniformsLib } from '../jsm/lights/RectAreaLightUniformsLib.js';
 //import { CSS3DRenderer, CSS3DObject } from '/jsm/renderers/CSS3DRenderer.js';
-import {OBJLoader} from "/jsm/loaders/OBJLoader.js";
+import {OBJLoader} from "../jsm/loaders/OBJLoader.js";
 
 
 // shader injection for box projected cube environment mapping
