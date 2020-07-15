@@ -3,6 +3,8 @@
 import * as THREE from "/build/three.module.js";
 import {OrbitControls} from "/jsm/controls/OrbitControls.js";
 import {GLTFLoader} from "/jsm/loaders/GLTFLoader.js";
+import {OBJLoader} from "/jsm/loaders/OBJLoader.js";
+
 
 
 //var globales: se declaran globales porque se necesita utilizar en varias funciones
@@ -78,7 +80,7 @@ var posiX=-400;
 var posiz=300;
 var posiy=40;
 
-for (let i = 0; i <2; i++) {
+for (let i = 0; i <10; i++) {
    createSillas(posiX, posiz,posiy);
    posiz-=75;
 }
@@ -109,36 +111,47 @@ for (let i = 0; i <2; i++) {
 
     var chair;
     var groupSillas = new THREE.Group();
-      for(let i=0;i<=10;i++){
+      for(let i=0;i<=1;i++){
+        // instantiate a loader
+var loader = new OBJLoader();
+
+// load a resource
+loader.load(
+// resource URL
+"/assets/models/theater-chair.obj",
+// called when resource is loaded
+function ( object ) {
+  chair = object;
+  console.log(chair);
+  if (chair){
+
+  chair.position.y = y;
+  chair.position.x = x;
+  chair.position.z = z;
+  z+=200;
+  groupSillas.add(chair);
+  console.log("hola");
+}
 
 
-      new GLTFLoader().load( "/assets/models/scene.gltf", function ( gltf ) {
-      chair = gltf.scene;
-      //posicion silla,
-      if (chair){
-        chair.position.y = y;
-        chair.position.x = x;
-        chair.position.z = z;
-        x+=50;
-        chair.rotation.y+=0.5;
-        //escala
-        chair.scale.set(0.02,0.02,0.02);
+},
+// called when loading is in progresses
+function ( xhr ) {
 
-        groupSillas.add(chair);
-        if(i==4){
-          x+=200;
-        }
-      }
+  console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
 
+},
+// called when loading has errors
+function ( error ) {
 
-      }, undefined, function ( error ) {
+  console.log( 'An error happened' );
 
-              console.error( error );
+}
+);
 
-      } );
 
     }
-
+console.log(groupSillas);
   scene.add(groupSillas);
 }
 

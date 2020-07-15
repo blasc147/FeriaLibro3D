@@ -1,11 +1,13 @@
 "use strict";
 import * as THREE from '../build/three.module.js';
 import {GLTFLoader} from "/jsm/loaders/GLTFLoader.js";
+import {DRACOLoader} from "/jsm/loaders/DRACOLoader.js";
 import { GUI } from '/jsm/libs/dat.gui.module.js';
 import { OrbitControls } from '/jsm/controls/OrbitControls.js';
 import { RectAreaLightHelper } from '/jsm/helpers/RectAreaLightHelper.js';
 import { RectAreaLightUniformsLib } from '/jsm/lights/RectAreaLightUniformsLib.js';
-import { CSS3DRenderer, CSS3DObject } from '/jsm/renderers/CSS3DRenderer.js';
+//import { CSS3DRenderer, CSS3DObject } from '/jsm/renderers/CSS3DRenderer.js';
+import {OBJLoader} from "/jsm/loaders/OBJLoader.js";
 
 
 // shader injection for box projected cube environment mapping
@@ -154,7 +156,7 @@ function init() {
 
 
   //actualizar escena
-  //update();
+  update();
 
 }
 
@@ -195,7 +197,8 @@ function createScene(){
 
   // camera
   camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR );
-  camera.position.set( 382, 10, - 3 );
+  camera.position.set( 312, 56, - 130 );
+
 
   cameraControls = new OrbitControls( camera, renderer.domElement );
   cameraControls.target.set( 0, - 10, 0 );
@@ -204,11 +207,6 @@ function createScene(){
   cameraControls.addEventListener( 'change', render );
   cameraControls.update();
 
-  //probando video
-
-  var video = new Element( 'SJOz3qjfQXU', 0, 0, 240, 0 );
-
-  scene.add(video);
   // cube camera for environment map
 
   var cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 512, {
@@ -221,7 +219,7 @@ function createScene(){
   cubeCamera.position.set( 0, 1000, 0 );
   scene.add( cubeCamera );
 
-  // ground floor ( with box projected environment mapping )
+  // piso
   var loader = new THREE.TextureLoader();
   var rMap = loader.load( '/assets/models/textures/hardwood2_diffuse.jpg' );
   rMap.wrapS = THREE.RepeatWrapping;
@@ -234,35 +232,9 @@ function createScene(){
     roughnessMap: rMap
   } );
 
-  var boxProjectedMat = new THREE.MeshPhysicalMaterial( {
-    color: new THREE.Color( '#ffffff' ),
-    roughness: 1,
-    envMap: cubeRenderTarget.texture,
-    roughnessMap: rMap
-  } );
 
-  boxProjectedMat.onBeforeCompile = function ( shader ) {
 
-    //these parameters are for the cubeCamera texture
-    shader.uniforms.cubeMapSize = { value: new THREE.Vector3( 200, 200, 100 ) };
-    shader.uniforms.cubeMapPos = { value: new THREE.Vector3( 0, - 50, 0 ) };
-
-    //replace shader chunks with box projection chunks
-    shader.vertexShader = 'varying vec3 vWorldPosition;\n' + shader.vertexShader;
-
-    shader.vertexShader = shader.vertexShader.replace(
-      '#include <worldpos_vertex>',
-      worldposReplace
-    );
-
-    shader.fragmentShader = shader.fragmentShader.replace(
-      '#include <envmap_physical_pars_fragment>',
-      envmapPhysicalParsReplace
-    );
-
-  };
-
-  groundPlane = new THREE.Mesh( new THREE.PlaneBufferGeometry( 500, 300, 300 ), boxProjectedMat );
+  groundPlane = new THREE.Mesh( new THREE.PlaneBufferGeometry( 500, 300, 300 ), defaultMat );
   groundPlane.rotateX( - Math.PI / 2 );
   groundPlane.position.set( 0, - 100, 0 );
   scene.add( groundPlane );
@@ -355,57 +327,70 @@ function createScene(){
   //chair.position.x = -70;
   //chair.position.z = 0;
 
-  var posiX=-70;
-  var posiz=0;
+  var posiX=-75;
+  var posiz=-45;
   var posiy=-90;
 
-  for (let i = 0; i <2; i++) {
-     createSillas(posiX, posiz,posiy);
-     posiz-=15;
-  }
+createSillas(-80, -130,-90, 1.4);
+createSillas(posiX, posiz,posiy,1.58);
+createSillas(posiX, 0,posiy,1.58);
+createSillas(posiX, 85,posiy,1.8);
+
+
 
 
 
   render();
 }
 
-function createSillas(x,z,y){
+function createSillas(x,z,y, rota){
 
   var chair;
   var groupSillas = new THREE.Group();
-    for(let i=0;i<=4;i++){
+    for(let i=0;i<=6;i++){
+      // instantiate a loader
+        var loader = new OBJLoader();
+
+        // load a resource
+        loader.load(
+        // resource URL
+        "/assets/models/theater-chair.obj",
+        // called when resource is loaded
+        function ( object ) {
+        chair = object;
+        if (chair){
+
+            chair.position.y = y;
+            chair.position.x = x;
+            chair.position.z = z;
+            chair.rotation.y-=rota;
+            chair.scale.set(0.2,0.2,0.2);
+            x+=30;
+
+            groupSillas.add(chair);
+        }
 
 
-    new GLTFLoader().load( "/assets/models/scene.gltf", function ( gltf ) {
-    chair = gltf.scene;
-    //posicion silla,
-    if (chair){
-      chair.position.y = y;
-      chair.position.x = x;
-      chair.position.z = z;
-      x+=50;
-      chair.rotation.y+=0.5;
-      //escala
-      chair.scale.set(0.02,0.02,0.02);
+        },
+        // called when loading is in progresses
+        function ( xhr ) {
 
-      groupSillas.add(chair);
-      if(i==4){
-        //update();
-        x+=200;
-      }
-    }
+            console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+
+        },
+        // called when loading has errors
+        function ( error ) {
+
+            console.log( 'An error happened' );
+
+        }
+        );
 
 
-    }, undefined, function ( error ) {
-
-            console.error( error );
-
-    } );
-
-  }
-
-scene.add(groupSillas);
+          }
+        scene.add(groupSillas);
 }
+
 
 function updateCubeMap() {
 
@@ -439,5 +424,7 @@ function render() {
 
   renderer.render( scene, camera );
   camera.position.x -= Math.cos( Math.sin( 10 ) ) / 10;
-  //console.log(camera.position);
+  camera.position.z += Math.cos( Math.sin( 10 ) ) / 10;
+
+
 }
