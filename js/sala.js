@@ -36,7 +36,7 @@ function init() {
 
 
   //actualizar escena
-  //update();
+  animate();
 
 }
 
@@ -247,7 +247,9 @@ plane.rotateY( Math.PI/2 );
 //plane.receiveShadow = true;
 plane.position.set( -140, 5, 0 );
 scene.add(plane);
+
   render();
+
 
   // instantiate a loader
 }
@@ -324,12 +326,24 @@ function crearReflectores(x, y, z, color){
 
 }
 
+function animate() {
+
+    setTimeout( function() {
+
+        requestAnimationFrame( animate );
+
+    }, 200 );
+
+    renderer.render(scene, camera);
+    camera.position.x -= Math.cos( Math.sin( 10 ) ) / 10;
+    camera.position.y -= Math.cos( Math.sin( 10 ) ) / 10;
+
+}
 
 
 function render() {
 
   renderer.render( scene, camera );
   //requestAnimationFrame(render);
-  camera.position.x -= Math.cos( Math.sin( 10 ) ) / 50;
-  camera.position.y -= Math.cos( Math.sin( 10 ) ) / 50;
+
 }
