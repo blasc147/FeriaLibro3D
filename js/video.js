@@ -1,12 +1,14 @@
 "use strict";
 import * as THREE from '../build/three.module.js';
-import { CSS3DRenderer, CSS3DObject } from 'https://unpkg.com/three/examples/jsm/renderers/CSS3DRenderer.js';
+import { CSS3DRenderer, CSS3DObject } from '../jsm/renderers/CSS3DRenderer.js';
 import { TrackballControls } from 'https://unpkg.com/three/examples/jsm/controls/TrackballControls.js';
+import crearColumna from './sala.js';
 
 var camera, webglscene, webglrenderer;
 var cssscene, cssrenderer;
 var controls;
 var geometry, material, mesh;
+
 
 init();
 animate();
@@ -61,6 +63,8 @@ function init() {
   cssscene = new THREE.Scene();
   cssrenderer = new CSS3DRenderer();
   cssrenderer.setSize( window.innerWidth, window.innerHeight );
+  cssrenderer.domElement.style.position = 'absolute';
+  cssrenderer.domElement.style.top = 0;
   document.querySelector('#css').appendChild( cssrenderer.domElement );
 
 
@@ -79,19 +83,23 @@ function init() {
   backPlane.position.set(0,0,-5);
   webglscene.add(backPlane);
 
-  controls = new TrackballControls( camera, webglrenderer.domElement );
-  controls.rotateSpeed = 4;
-
   window.addEventListener( 'resize', onWindowResize, false );
+
+  var trideo = document.getElementById( 'css' );
+  //trideo.style.display = 'none';
+
+
+
+
 }
 
 function animate() {
 
   requestAnimationFrame( animate );
 
-  mesh.rotation.x += 0.01;
-  mesh.rotation.y += 0.02;
-  controls.update();
+  //mesh.rotation.x += 0.01;
+  //mesh.rotation.y += 0.02;
+  //controls.update();
   webglrenderer.render( webglscene, camera );
   cssrenderer.render( cssscene, camera );
 

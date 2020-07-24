@@ -60,8 +60,8 @@ function createScene(){
 
   cameraControls = new OrbitControls( camera, renderer.domElement );
   cameraControls.target.set( 0, - 10, 0 );
-  cameraControls.maxDistance = 400;
-  cameraControls.minDistance = 10;
+  cameraControls.maxDistance = 250;
+  cameraControls.minDistance = 50;
   cameraControls.addEventListener( 'change', render );
   cameraControls.update();
 
@@ -113,6 +113,7 @@ function createScene(){
   crearColumna(10,250,10,-10,0,150);
   crearColumna(10,30,300,110,-10,0);
   crearColumna(10,10,300,200,100,0);
+  //escenario
   crearColumna(50,40,300,-125,-100,0);
 
 
@@ -170,7 +171,7 @@ function createScene(){
   scene.add( planeLeft );
 
   //lights
-  var width = 200;
+  var width = 250;
   var height = 100;
   var intensity = 10;
 
