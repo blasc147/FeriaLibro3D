@@ -8,6 +8,8 @@ import { RectAreaLightUniformsLib } from '../jsm/lights/RectAreaLightUniformsLib
 import {OBJLoader} from "../jsm/loaders/OBJLoader.js";
 import {MTLLoader} from "../jsm/loaders/MTLLoader.js";
 import {DDSLoader} from "../jsm/loaders/DDSLoader.js";
+import {GLTFLoader} from "../jsm/loaders/GLTFLoader.js";
+
 
 
 
@@ -115,6 +117,11 @@ function createScene(){
   crearColumna(10,10,300,200,100,0);
   //escenario
   crearColumna(50,40,300,-125,-100,0);
+  //escaleras
+  crearColumna(10,30,40,-100,-100,120);
+  crearColumna(10,30,40,-100,-100,-120);
+  crearColumna(10,15,40,-90,-100,120);
+  crearColumna(10,15,40,-90,-100,-120);
 
 
   function crearColumna(x, y, z, a ,b ,c ){
@@ -122,7 +129,7 @@ function createScene(){
     col1.translate( a,b,c );
     let cola = new THREE.Mesh( col1, material );
     scene.add( cola );
-  }
+  };
 
   // paredes de ladrillo
   var diffuseTex = loader.load( '/assets/models/textures/brick_diffuse.jpg', function () {
@@ -249,6 +256,10 @@ plane.rotateY( Math.PI/2 );
 plane.position.set( -140, 5, 0 );
 scene.add(plane);
 
+//telon
+crearCortinas(-140,-80,-120);
+crearCortinas(-140,-80,120);
+
   render();
 
 
@@ -327,6 +338,35 @@ function crearReflectores(x, y, z, color){
 
 }
 
+function crearCortinas(x,y,z){
+  var cortinas = new GLTFLoader();
+  cortinas.load(
+  	'assets/models/telon.gltf',
+  	function ( gltf ) {
+
+  		var telon = gltf.scene;
+      if(telon){
+        telon.scale.set(30,50,20);
+        telon.position.set(x,y,z);
+        scene.add(telon);
+        render();
+      }
+  	},
+  	// called while loading is progressing
+  	function ( xhr ) {
+
+  		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+
+  	},
+  	// called when loading has errors
+  	function ( error ) {
+
+  		console.log( 'An error happened' );
+
+  	}
+  );
+}
+
 function animate() {
 
     setTimeout( function() {
@@ -339,7 +379,7 @@ function animate() {
     camera.position.x -= Math.cos( Math.sin( 10 ) ) / 10;
     camera.position.y -= Math.cos( Math.sin( 10 ) ) / 10;
 
-}
+};
 
 
 function render() {
@@ -347,4 +387,4 @@ function render() {
   renderer.render( scene, camera );
   //requestAnimationFrame(render);
 
-}
+};

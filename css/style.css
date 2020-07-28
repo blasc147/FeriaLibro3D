@@ -20,6 +20,7 @@ html {
 
 #css {
 	background: black;
+	position: absolute;
 }
 
 #webgl {
@@ -29,7 +30,7 @@ html {
 h1 {
   font-family: "Roboto Condensed", "Helvetica Neue", Helvetica, Arial,
     sans-serif;
-  font-size: 35px;
+  font-size: 50px;
   line-height: 1;
 }
 h3 {
@@ -41,16 +42,55 @@ section {
   max-width: 275px;
   width: 100%;
   display: none;
-  font-size: 20px;
+  font-size: 30px;
 }
 p {
   color: rgba(255, 255, 255, 0.5);
 }
 a {
   color: white;
-	font-size: 20px;
+	font-size: 30px;
 }
 
+.button {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: grey;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 28px;
+  padding: 15px;
+  width: 200px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
 @media (min-width: 1100px) {
   section {
     display: block;
