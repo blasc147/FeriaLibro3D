@@ -33,8 +33,8 @@ function createYoutubeVideo ( id, x, y, z, ry ) {
   div.style.backgroundColor = '#fff';
 
   var iframe = document.createElement( 'iframe' );
-  iframe.style.width = '100%';
-  iframe.style.height = '100%';
+  iframe.style.width = '50%';
+  iframe.style.height = '50%';
   iframe.style.border = '0px';
   iframe.src = [ 'https://www.youtube.com/embed/', id, '?rel=0' ].join( '' );
   iframe.autoplay=1;

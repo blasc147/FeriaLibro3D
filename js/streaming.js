@@ -36,8 +36,8 @@ function createYoutubeVideo ( id, x, y, z, ry ) {
   iframe.style.width = '100%';
   iframe.style.height = '100%';
   iframe.style.border = '0px';
-  iframe.src = [ 'https://www.youtube.com/embed/', id, '?rel=0' ].join( '' );
-  iframe.autoplay=1;
+  iframe.id="video";
+  iframe.src = [ 'https://www.youtube.com/embed/', id, '?rel=0&autoplay=1' ].join( '' );
   div.appendChild( iframe );
 
   var cssobject = new CSS3DObject( div );
@@ -86,7 +86,7 @@ function createScene(){
   var container = document.getElementById( 'container' );
 
   // renderer
-  renderer = new THREE.WebGLRenderer( { antialias: true } );
+  renderer = new THREE.WebGLRenderer( { antialias: true, alpha:true, preserveDrawingBuffer: true} );
   renderer.setPixelRatio( window.devicePixelRatio );
   renderer.setSize( WIDTH, HEIGHT );
   document.querySelector('#webgl').appendChild( renderer.domElement );
@@ -211,7 +211,7 @@ function createScene(){
   //lights
   var width = 250;
   var height = 100;
-  var intensity = 10;
+  var intensity = 5;
 
   RectAreaLightUniformsLib.init();
 //reflectores
@@ -256,7 +256,6 @@ for(let j=0;j<8;j++){
 }
 
 //cortinas
-
 crearCortinas(-100,-80,-120);
 crearCortinas(-100,-80,120);
 
@@ -270,12 +269,10 @@ document.querySelector('#css').appendChild( cssrenderer.domElement );
 
 
 
-material = new THREE.MeshNormalMaterial();
-
-mesh = new THREE.Mesh( geometry, material );
-scene.add( mesh );
-
 createYoutubeVideo( 'FHVD9ft_ANw', -180, 0, 0, -4.7 );
+
+var trideo = document.getElementById( 'css' );
+
 
   render();
 
