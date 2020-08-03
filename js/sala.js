@@ -21,8 +21,8 @@ var HEIGHT = window.innerHeight;
 // camera
 var VIEW_ANGLE = 70;
 var ASPECT = WIDTH / HEIGHT;
-var NEAR = 1;
-var FAR = 800;
+var NEAR = 2;
+var FAR =10000;
 
 var camera, cubeCamera, scene, renderer;
 
@@ -81,14 +81,9 @@ function createScene(){
 
   // piso
   var loader = new THREE.TextureLoader();
-  var rMap = loader.load( '/assets/models/textures/FloorsCheckerboard_S_Diffuse.jpg' );
-  rMap.wrapS = THREE.RepeatWrapping;
-  rMap.wrapT = THREE.RepeatWrapping;
-  rMap.repeat.set(8, 8);
 
   var defaultMat = new THREE.MeshBasicMaterial( {
-     map: rMap,
-     color:0x484849
+     color:0x484848
   } );
 
 
@@ -146,7 +141,7 @@ function createScene(){
   wallMat = new THREE.MeshPhysicalMaterial( {
     map: diffuseTex,
 
-    bumpScale: 0.1,
+    //bumpScale: 0.1,
   } );
 
 //posiciones de las paredes y tamano
@@ -208,34 +203,36 @@ function createScene(){
   var redRectLightHelper = new RectAreaLightHelper( redRectLight, 0xffffff );
   redRectLight.add( redRectLightHelper );
 
+  var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+scene.add( directionalLight );
 
-  var posiX=-60;
-  var posiza=-130;
-  var posiy=-100;
-  var poszb=90;
+  var posiX=-40;
+  var posiya=-90;
+  var posiz=-125;
+  var poszb=95;
 //crear sillas laterales
 for(let j=0;j<3;j++){
 
-    createSillas(posiX, posiza,posiy, 1.4,6);
-    createSillas(130, posiza,-10, 1.4,0);
-    createSillas(160, posiza,-5, 1.4,0);
+    createSillas2(posiX, posiya,posiz, 0.1,6);
+    createSillas2(130,-5, posiz, 0.1,1);
+    createSillas2(160,5, posiz, 0.1,1);
 
-    createSillas(posiX,poszb,posiy,1.8,6);
-    createSillas(130,poszb,-10,1.8,0);
-    createSillas(160,poszb,-5,1.8,0);
-    posiza+=15;
-    poszb+=15;
+    createSillas2(posiX,posiya,poszb,-0.1,6);
+    createSillas2(130,-5,poszb,-0.1,1);
+    createSillas2(160,5,poszb,-0.1,1);
+    posiz+=18;
+    poszb+=18;
 
 }
 //sillas del medio
-var poszc=-58
-for(let j=0;j<8;j++){
+var posiz=-45
+for(let j=0;j<6;j++){
 
-  createSillas(posiX, poszc,posiy,1.58,6);
-  createSillas(130, poszc,-10,1.58,0);
-  createSillas(160, poszc,-5,1.58,0);
+  createSillas2(posiX, posiya,posiz,0,6);
+  createSillas2(130, -5,posiz,0,1);
+  createSillas2(160, 5,posiz,0,1);
 
-    poszc+=15;
+    posiz+=18;
 
 }
 
@@ -260,10 +257,60 @@ scene.add(plane);
 crearCortinas(-140,-80,-120);
 crearCortinas(-140,-80,120);
 
+
+
   render();
 
 
   // instantiate a loader
+}
+
+function createSillas2(x,y,z,r,cant){
+
+    for (let i = 0; i < cant; i++) {
+      var silla = new THREE.Group();
+      var cubo1 = new THREE.BoxGeometry( 14,3,14,1, 1, 1 );
+      var materialsilla = new THREE.MeshLambertMaterial( {color: 0xf5d91, emissive:0x000000} );
+      var cube1 = new THREE.Mesh( cubo1, materialsilla );
+      cube1.position.set(x,y,z)
+      cube1.rotation.y+=r;
+      silla.add( cube1 );
+
+      var cubo2 = new THREE.BoxGeometry( 3,18,14,1, 1, 1 );
+      var cube2 = new THREE.Mesh( cubo2, materialsilla );
+      cube2.position.set(x+6,y+8,z);
+      cube2.rotation.y+=r;
+      silla.add( cube2 );
+
+      var cubo3 = new THREE.BoxGeometry( 10,3,2,1, 1, 1 );
+      var cube3 = new THREE.Mesh( cubo3, materialsilla );
+      cube3.position.set(x,y+8,z+6);
+      cube3.rotation.y+=r;
+      silla.add( cube3 );
+
+      var cubo4 = new THREE.BoxGeometry( 10,3,2,1, 1, 1 );
+      var cube4 = new THREE.Mesh( cubo4, materialsilla );
+      cube4.position.set(x,y+8,z-6);
+      cube4.rotation.y+=r;
+      silla.add( cube4 );
+
+      var cubo5 = new THREE.BoxGeometry( 8,10,3,1, 1, 1 );
+      var cube5 = new THREE.Mesh( cubo5, materialsilla );
+      cube5.position.set(x,y-5,z-5);
+      cube5.rotation.y+=r;
+      silla.add( cube5 );
+
+      var cubo6 = new THREE.BoxGeometry( 8,10,3,1, 1, 1 );
+      var cube6 = new THREE.Mesh( cubo6, materialsilla );
+      cube6.position.set(x,y-5,z+5);
+      cube6.rotation.y+=r;
+      silla.add( cube6 );
+
+      scene.add(silla);
+      x+=30;
+    }
+
+
 }
 
 function createSillas(x,z,y, rota, cant){
@@ -369,15 +416,15 @@ function crearCortinas(x,y,z){
 
 function animate() {
 
-    setTimeout( function() {
+    //setTimeout( function() {
 
         requestAnimationFrame( animate );
 
-    }, 200 );
+    //}, 200 );
 
     renderer.render(scene, camera);
-    camera.position.x -= Math.cos( Math.sin( 10 ) ) / 10;
-    camera.position.y -= Math.cos( Math.sin( 10 ) ) / 10;
+    camera.position.x -= Math.cos( Math.sin( 10 ) ) / 50;
+    camera.position.y -= Math.cos( Math.sin( 10 ) ) / 50;
 
 };
 

@@ -66,8 +66,8 @@ function createYoutubeVideo ( id, x, y, z, ry ) {
 // camera
 var VIEW_ANGLE = 60;
 var ASPECT = WIDTH / HEIGHT;
-var NEAR = 1;
-var FAR = 800;
+var NEAR = 2;
+var FAR =1000;
 
 
 init();
@@ -255,9 +255,6 @@ for(let j=0;j<8;j++){
 
 }
 
-//cortinas
-crearCortinas(-100,-80,-120);
-crearCortinas(-100,-80,120);
 
 //video youtube
 cssscene = new THREE.Scene();
@@ -269,7 +266,7 @@ document.querySelector('#css').appendChild( cssrenderer.domElement );
 
 
 
-createYoutubeVideo( 'FHVD9ft_ANw', -180, 0, 0, -4.7 );
+createYoutubeVideo( 'Bi4w23aW99s', -180, 0, 0, -4.7 );
 
 var trideo = document.getElementById( 'css' );
 
@@ -350,41 +347,9 @@ function crearReflectores(x, y, z, color){
 
 }
 
-function crearCortinas(x,y,z){
-  var cortinas = new GLTFLoader();
-  cortinas.load(
-  	'assets/models/telon.gltf',
-  	function ( gltf ) {
 
-  		var telon = gltf.scene;
-      if(telon){
-        telon.scale.set(30,50,20);
-        telon.position.set(x,y,z);
-        scene.add(telon);
-        render();
-      }
-  	},
-  	// called while loading is progressing
-  	function ( xhr ) {
-
-  		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-
-  	},
-  	// called when loading has errors
-  	function ( error ) {
-
-  		console.log( 'An error happened' );
-
-  	}
-  );
-}
 function animate() {
 
-    //setTimeout( function() {
-
-        //requestAnimationFrame( animate );
-
-    //}, 200 );
 
     renderer.render(scene, camera);
     cssrenderer.render( cssscene, camera );
