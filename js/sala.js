@@ -61,8 +61,8 @@ function createScene(){
 
 
   cameraControls = new OrbitControls( camera, renderer.domElement );
-  cameraControls.target.set( 0, - 10, 0 );
-  cameraControls.maxDistance = 250;
+  cameraControls.target.set( -70, - 10, 0 );
+  cameraControls.maxDistance = 300;
   cameraControls.minDistance = 50;
   cameraControls.addEventListener( 'change', render );
   cameraControls.update();
@@ -269,39 +269,42 @@ function createSillas2(x,y,z,r,cant){
 
     for (let i = 0; i < cant; i++) {
       var silla = new THREE.Group();
-      var cubo1 = new THREE.BoxGeometry( 14,3,14,1, 1, 1 );
+      var cubo1 = new THREE.BoxGeometry( 14,2,14,1, 1, 1 );
       var materialsilla = new THREE.MeshLambertMaterial( {color: 0xf5d91, emissive:0x000000} );
+      var materialnegro = new THREE.MeshLambertMaterial( {color: 0x484848, emissive:0x000000} );
       var cube1 = new THREE.Mesh( cubo1, materialsilla );
       cube1.position.set(x,y,z)
       cube1.rotation.y+=r;
       silla.add( cube1 );
 
-      var cubo2 = new THREE.BoxGeometry( 3,18,14,1, 1, 1 );
+
+
+      var cubo2 = new THREE.BoxGeometry( 2,18,14,1, 1, 1 );
       var cube2 = new THREE.Mesh( cubo2, materialsilla );
       cube2.position.set(x+6,y+8,z);
       cube2.rotation.y+=r;
       silla.add( cube2 );
 
       var cubo3 = new THREE.BoxGeometry( 10,3,2,1, 1, 1 );
-      var cube3 = new THREE.Mesh( cubo3, materialsilla );
+      var cube3 = new THREE.Mesh( cubo3, materialnegro );
       cube3.position.set(x,y+8,z+6);
       cube3.rotation.y+=r;
       silla.add( cube3 );
 
       var cubo4 = new THREE.BoxGeometry( 10,3,2,1, 1, 1 );
-      var cube4 = new THREE.Mesh( cubo4, materialsilla );
+      var cube4 = new THREE.Mesh( cubo4, materialnegro );
       cube4.position.set(x,y+8,z-6);
       cube4.rotation.y+=r;
       silla.add( cube4 );
 
       var cubo5 = new THREE.BoxGeometry( 8,10,3,1, 1, 1 );
-      var cube5 = new THREE.Mesh( cubo5, materialsilla );
+      var cube5 = new THREE.Mesh( cubo5, materialnegro );
       cube5.position.set(x,y-5,z-5);
       cube5.rotation.y+=r;
       silla.add( cube5 );
 
       var cubo6 = new THREE.BoxGeometry( 8,10,3,1, 1, 1 );
-      var cube6 = new THREE.Mesh( cubo6, materialsilla );
+      var cube6 = new THREE.Mesh( cubo6, materialnegro );
       cube6.position.set(x,y-5,z+5);
       cube6.rotation.y+=r;
       silla.add( cube6 );
@@ -313,65 +316,7 @@ function createSillas2(x,y,z,r,cant){
 
 }
 
-function createSillas(x,z,y, rota, cant){
 
-  var chair;
-  var groupSillas = new THREE.Group();
-  // model
-
-				var onProgress = function ( xhr ) {
-
-					if ( xhr.lengthComputable ) {
-
-						var percentComplete = xhr.loaded / xhr.total * 100;
-						console.log( Math.round( percentComplete, 2 ) + '% downloaded' );
-
-					}
-
-				};
-
-		var onError = function () { };
-
-    var manager = new THREE.LoadingManager();
-    manager.addHandler( /\.dds$/i, new DDSLoader() );
-    for(let i=0;i<=cant;i++){
-      // instantiate a loader
-
-
-
-        var loader = new MTLLoader( manager )
-					.setPath( '/assets/models/' )
-					.load( 'untitled.mtl', function ( materials ) {
-
-						materials.preload();
-
-						new OBJLoader( manager )
-							.setMaterials( materials )
-							.setPath( '/assets/models/' )
-							.load( 'untitled.obj', function ( object ) {
-                chair = object;
-
-                if (chair){
-
-                    chair.position.y = y;
-                    chair.position.x = x;
-                    chair.position.z = z;
-                    chair.rotation.y-=rota;
-                    chair.scale.set(0.6,0.6,0.6);
-                    x+=30;
-                    groupSillas.add(chair);
-                    render();
-                }
-
-							}, onProgress, onError );
-
-					} );
-
-
-
-          }
-        scene.add(groupSillas);
-}
 
 function crearReflectores(x, y, z, color){
   var intensidad = 4;

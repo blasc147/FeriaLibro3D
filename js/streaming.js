@@ -270,6 +270,8 @@ createYoutubeVideo( 'Bi4w23aW99s', -180, 0, 0, -4.7 );
 
 var trideo = document.getElementById( 'css' );
 
+crearCortinas(-120,-80,-120);
+crearCortinas(-120,-80,120);
 
   render();
 
@@ -357,6 +359,35 @@ function animate() {
     //camera.position.y -= Math.cos( Math.sin( 10 ) ) / 10;
 
 };
+
+function crearCortinas(x,y,z){
+  var cortinas = new GLTFLoader();
+  cortinas.load(
+  	'assets/models/telon.gltf',
+  	function ( gltf ) {
+
+  		var telon = gltf.scene;
+      if(telon){
+        telon.scale.set(30,50,20);
+        telon.position.set(x,y,z);
+        scene.add(telon);
+        render();
+      }
+  	},
+  	// called while loading is progressing
+  	function ( xhr ) {
+
+  		console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+
+  	},
+  	// called when loading has errors
+  	function ( error ) {
+
+  		console.log( 'An error happened' );
+
+  	}
+  );
+}
 
 
 function render() {
