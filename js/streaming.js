@@ -265,8 +265,8 @@ cssrenderer.domElement.style.top = 0;
 document.querySelector('#css').appendChild( cssrenderer.domElement );
 
 
-
-createYoutubeVideo( 'Bi4w23aW99s', -180, 0, 0, -4.7 );
+var idVideo = window.location.href.split('?')[1];
+createYoutubeVideo( idVideo, -180, 0, 0, -4.7 );
 
 var trideo = document.getElementById( 'css' );
 

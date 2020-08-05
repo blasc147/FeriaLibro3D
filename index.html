@@ -17,7 +17,7 @@
   <p>Representacion en 3D del auditorio ubicado en la Casa de las culturas del Chaco. Donde podras presenciar las diferentes conferencias virtuales.</p>
   <small>Click para ingresar a la sala de conferencias:  <br>
     <div id="botones">
-        <a class="button" style="vertical-align:middle" href="video.html"><span>Ingresar </span></a>
+        <a class="button" style="vertical-align:middle" href="video.html?122"><span>Ingresar </span></a>
     </div>
 
 </section>
@@ -31,11 +31,16 @@
           url: "https://rickandmortyapi.com/api/character/1,2,3,4,5,6",
           type: "GET",
           success: function(result) {
-            result.forEach((item, i) => {
-                console.log(item.name);
-                var html = '<a id="+item.id+" class="button" style="vertical-align:middle" href="video.html"><span>'+item.name+' </span></a><br>';
-                $("#botones").append(html);
-            });
+            //result.forEach((item, i) => {
+            //    console.log(item.name);
+            //    var html = '<a id="+item.id+" class="button" style="vertical-align:middle" href="video.html?'+item.id+'"><span>'+item.name+' </span></a><br>';
+            //    $("#botones").append(html);
+            //});
+            let frutas = ["pmtLxw9kQz0", "XREL3ALYukQ", "Gge-p24Iaaw", "_7y4Csdk7VE"];
+            frutas.forEach(function(elemento, indice, array) {
+              var html = '<a class="button" style="vertical-align:middle" href="video.html?'+elemento+'"><span>'+elemento+' </span></a><br>';
+                  $("#botones").append(html);
+            })
 
 
           },
