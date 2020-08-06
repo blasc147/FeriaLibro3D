@@ -368,8 +368,12 @@ function animate() {
     //}, 200 );
 
     renderer.render(scene, camera);
-    camera.position.x -= Math.cos( Math.sin( 10 ) ) / 50;
-    camera.position.y -= Math.cos( Math.sin( 10 ) ) / 50;
+    //camera.position.z -= Math.cos( Math.sin( 10 ) ) / 2;
+    //camera.rotation.x += Math.cos( Math.sin( 10 ) ) / 180;
+    //scene.rotation.y -= 0.001;
+    scene.rotation.y -= 0.0009;
+    //scene.rotation.x -= 0.001;
+    camera.lookAt(-100,0,0);
 
 };
 
